@@ -12,9 +12,9 @@ As the number of the objects in the bucket can be larger than 1000, which is the
 
 Now this was all good fun but the really **interesting** part was creating a proper unittest.
 
-After some searching I found **[moto]**(https://pypi.org/project/moto/), the "Mock AWS Services" library. It is brilliant!  
+After some searching I found **[moto](https://pypi.org/project/moto/)**, the "Mock AWS Services" library. It is brilliant!  
 Using this library the test will _mock_ access to the S3 bucket and create several objects in the bucket. You can leave the dumy AWS credentials in the script as they won't be needed.
 
 At this point I wanted to create multiple objects in the S3 mocked environment with different timestamps, but unfortunately I discovered that this is not possible. Once an object is created in S3 the date of creation metadata cannot be easily altered, see [here for reference](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html#object-metadata).
 
-Cue another awesome library called **[freezegun](https://pypi.org/project/freezegun/0.1.11/)**. The test use freezegun to mock the date/time and create S3 objects with different timestamps, so that we can safely experiment with the logic of the `cleanup()` function ('leave objects older than n days, delete everything else within the _prefix_').
+Cue another awesome library called **[freezegun](https://pypi.org/project/freezegun/0.1.11/)**. The test use _freeze_time_ to mock the date/time and create S3 objects with different timestamps, so that we can safely experiment with the logic of the `cleanup()` function ('leave objects older than n days, delete everything else within the _prefix_').
