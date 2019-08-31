@@ -1,8 +1,8 @@
-# python-projects
+# python-projects [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 A place for my Python projects. Very much WIP.
 
-## [delete-s3-objects](delete-s3-objects) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+## [delete-s3-objects](delete-s3-objects)
 This is a bit of code I wrote for a much bigger script used to monitor and cleanup objects inside an S3 bucket. The rest of the script is proprietary and unfortunately cannot be shared.
 
 The file [script.py](delete-s3-objects/script.py) contains the `cleanup()` function. The function use `boto3` to connect to AWS, pull a list of all the objects contained in a specific bucket and then delete all the objects older than `n` days.  
