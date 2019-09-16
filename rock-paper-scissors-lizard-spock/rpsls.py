@@ -2,7 +2,7 @@
 
 import os
 
-ROUNDS = os.environ.get('RPSLS_ROUNDS', 10)
+ROUNDS = int(os.environ.get('RPSLS_ROUNDS', 10))
 
 def main():
     print('Rock, paper, scissors, lizard, Spock')
