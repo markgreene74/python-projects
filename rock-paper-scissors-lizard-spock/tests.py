@@ -1,6 +1,7 @@
 import pytest
 
 import rpsls
+
 from collections import namedtuple
 
 Play = namedtuple("Play", "name, winover")

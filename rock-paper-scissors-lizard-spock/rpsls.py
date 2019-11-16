@@ -1,6 +1,7 @@
 #!/bin/env python3
 
 import os
+
 from collections import namedtuple
 
 ROUNDS = int(os.environ.get("RPSLS_ROUNDS", 10))
