@@ -12,3 +12,11 @@
 - lizard: poisons Spock, eats paper
 - Spock: smashes scissors, vaporises rock
 
+## Testing
+
+Set the ENV variables needed in `pytest.ini`.
+
+Run:
+```
+(env) $ pytest tests.py
+```
