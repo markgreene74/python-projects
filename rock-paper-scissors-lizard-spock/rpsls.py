@@ -14,6 +14,8 @@ all_plays = [Play(name=i, winover=j) for i, j in zip(plays_list, wins_list)]
 def play(aplay=None):
     if not aplay:
         return all_plays
+    else:
+        return [i for i in all_plays if i.name == aplay]
 
 
 def main():
