@@ -27,7 +27,7 @@ def test_all_plays():
 
 
 @pytest.mark.parametrize("arg, expected", test_single_plays_data)
-# @pytest.mark.parametrize('arg, expected', [("spock", [Play(name="spock", winover=[1, 2, 3])])])
+# @pytest.mark.parametrize('arg, expected', [("spock", ["rock", "scissors"])])
 def test_single_plays(arg, expected):
     assert rpsls.play(arg) == expected
 
