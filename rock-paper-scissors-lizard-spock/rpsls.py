@@ -18,7 +18,7 @@ def play(aplay=None):
     if not aplay:
         return all_plays
     else:
-        return {aplay: all_plays.get(aplay)}
+        return sorted(all_plays.get(aplay).split(","))
 
 
 def main():

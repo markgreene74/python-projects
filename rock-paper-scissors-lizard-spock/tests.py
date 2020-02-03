@@ -10,9 +10,9 @@ test_all_plays_data = {
     "spock": "scissors,rock",
 }
 test_single_plays_data = [
-    ("rock", {"rock": "scissors,lizard"}),
-    ("scissors", {"scissors": "paper,lizard"}),
-    ("spock", {"spock": "scissors,rock"}),
+    ("rock", ["lizard", "scissors"]),
+    ("scissors", ["lizard", "paper"]),
+    ("spock", ["rock", "scissors"]),
 ]
 
 
@@ -33,4 +33,4 @@ def test_single_plays(arg, expected):
 
 
 def test_single():
-    assert rpsls.play("spock") == {"spock": "scissors,rock"}
+    assert rpsls.play("spock") == ["rock", "scissors"]
