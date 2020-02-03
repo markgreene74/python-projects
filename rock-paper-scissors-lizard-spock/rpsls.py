@@ -4,7 +4,13 @@ import os
 
 ROUNDS = int(os.environ.get("RPSLS_ROUNDS", 10))
 plays_list = ["rock", "paper", "scissors", "lizard", "spock"]
-wins_list = ["scissors,lizard","rock,spock","paper,lizard","spock,paper","scissors,rock"]
+wins_list = [
+    "scissors,lizard",
+    "rock,spock",
+    "paper,lizard",
+    "spock,paper",
+    "scissors,rock",
+]
 all_plays = dict(zip(plays_list, wins_list))
 
 

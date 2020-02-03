@@ -7,7 +7,7 @@ test_all_plays_data = {
     "paper": "rock,spock",
     "scissors": "paper,lizard",
     "lizard": "spock,paper",
-    "spock": "scissors,rock"
+    "spock": "scissors,rock",
 }
 test_single_plays_data = [
     ("rock", {"rock": "scissors,lizard"}),
