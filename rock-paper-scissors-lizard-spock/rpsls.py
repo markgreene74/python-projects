@@ -3,26 +3,26 @@
 import os
 from random import choice
 
-ROUNDS = int(os.environ.get("RPSLS_ROUNDS", 10))
-plays_list = ["rock", "paper", "scissors", "lizard", "spock"]
-wins_list = [
+ROUNDS: int = int(os.environ.get("RPSLS_ROUNDS", 10))
+plays_list: list = ["rock", "paper", "scissors", "lizard", "spock"]
+wins_list: list = [
     "scissors,lizard",
     "rock,spock",
     "paper,lizard",
     "spock,paper",
     "scissors,rock",
 ]
-all_plays = dict(zip(plays_list, wins_list))
+all_plays: dict = dict(zip(plays_list, wins_list))
 
 
-def play(aplay=None):
+def play(aplay: str = None) -> list:
     if not aplay:
         return all_plays
     else:
         return sorted(all_plays.get(aplay).split(","))
 
 
-def match(one="", two=""):
+def match(one: str = "", two: str = "") -> str:
     # pick a random player if needed
     if one not in plays_list:
         one = choice(plays_list)
@@ -39,7 +39,7 @@ def match(one="", two=""):
         return two
 
 
-def main():
+def main() -> None:
     print("Rock, paper, scissors, lizard, Spock")
     print(f"Will play {ROUNDS} rounds")
 

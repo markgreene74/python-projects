@@ -61,4 +61,4 @@ def test_single_matches(arg1, arg2, expected):
 
 
 def test_random_single_match():
-    assert rpsls.match() in list(test_all_plays_data.keys()) + ['tie']
+    assert rpsls.match() in list(test_all_plays_data.keys()) + ["tie"]
