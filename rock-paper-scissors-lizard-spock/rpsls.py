@@ -21,6 +21,17 @@ def play(aplay=None):
         return sorted(all_plays.get(aplay).split(","))
 
 
+def match(one="", two=""):
+    if one == two:
+        return "tie"
+    if two in all_plays.get(one):
+        # one wins
+        return one
+    else:
+        # two wins
+        return two
+
+
 def main():
     print("Rock, paper, scissors, lizard, Spock")
     print(f"Will play {ROUNDS} rounds")

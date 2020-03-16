@@ -39,4 +39,4 @@ def test_single_plays(arg, expected):
 
 # FIXME replace it with a more general test
 def test_single_match():
-    assert rpsls.match("scissors", "rock") == "scissors vs rock: rock wins"
+    assert rpsls.match("scissors", "rock") == "rock"
