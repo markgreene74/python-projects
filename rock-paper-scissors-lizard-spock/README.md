@@ -17,6 +17,13 @@
 Set the ENV variables needed in `pytest.ini`.
 
 Run:
+
 ```
-(env) $ pytest tests.py
+(env) $ python -m pytest
+```
+
+or just
+
+```
+(env) $ pytest
 ```
