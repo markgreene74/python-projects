@@ -26,11 +26,17 @@ def test_all_plays():
     assert rpsls.play() == test_all_plays_data
 
 
+# replaced by a more general test
+# def test_single_play():
+#     assert rpsls.play("spock") == ["rock", "scissors"]
+
+
 @pytest.mark.parametrize("arg, expected", test_single_plays_data)
 # @pytest.mark.parametrize('arg, expected', [("spock", ["rock", "scissors"])])
 def test_single_plays(arg, expected):
     assert rpsls.play(arg) == expected
 
 
-def test_single():
-    assert rpsls.play("spock") == ["rock", "scissors"]
+# FIXME replace it with a more general test
+def test_single_match():
+    assert rpsls.match("scissors", "rock") == "scissors vs rock: rock wins"
