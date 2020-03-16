@@ -14,6 +14,14 @@ test_single_plays_data = [
     ("scissors", ["lizard", "paper"]),
     ("spock", ["rock", "scissors"]),
 ]
+test_single_matches_data = [
+    ("rock", "rock", "tie"),
+    ("scissors", "lizard", "scissors"),
+    ("lizard", "scissors", "scissors"),
+    ("spock", "paper", "paper"),
+    ("spock", "rock", "spock"),
+    ("paper", "lizard", "lizard"),
+]
 
 
 def test_output(capsys):
@@ -37,9 +45,13 @@ def test_single_plays(arg, expected):
     assert rpsls.play(arg) == expected
 
 
-# FIXME replace it with a more general test
-def test_single_match_win():
-    assert rpsls.match("scissors", "rock") == "rock"
+# replaced it with a more general test
+# def test_single_match_win():
+#     assert rpsls.match("scissors", "rock") == "rock"
+# def test_single_match_tie():
+#     assert rpsls.match("rock", "rock") == "tie"
 
-def test_single_match_tie():
-    assert rpsls.match("rock", "rock") == "tie"
+
+@pytest.mark.parametrize("arg1, arg2, expected", test_single_matches_data)
+def test_single_matches(arg1, arg2, expected):
+    assert rpsls.match(arg1, arg2) == expected
