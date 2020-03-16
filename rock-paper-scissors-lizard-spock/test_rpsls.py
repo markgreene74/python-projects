@@ -38,5 +38,8 @@ def test_single_plays(arg, expected):
 
 
 # FIXME replace it with a more general test
-def test_single_match():
+def test_single_match_win():
     assert rpsls.match("scissors", "rock") == "rock"
+
+def test_single_match_tie():
+    assert rpsls.match("rock", "rock") == "tie"
