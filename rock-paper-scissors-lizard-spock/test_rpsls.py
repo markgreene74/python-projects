@@ -1,20 +1,22 @@
 import pytest
 
+import os
 import rpsls
 
-test_all_players_data = {
+ROUNDS: int = int(os.environ.get("RPSLS_ROUNDS", 10))
+test_all_players_data: dict = {
     "rock": "scissors,lizard",
     "paper": "rock,spock",
     "scissors": "paper,lizard",
     "lizard": "spock,paper",
     "spock": "scissors,rock",
 }
-test_single_players_data = [
+test_single_players_data: list = [
     ("rock", ["lizard", "scissors"]),
     ("scissors", ["lizard", "paper"]),
     ("spock", ["rock", "scissors"]),
 ]
-test_single_matches_data = [
+test_single_matches_data: list = [
     ("rock", "rock", "tie"),
     ("scissors", "lizard", "scissors"),
     ("lizard", "scissors", "scissors"),
@@ -28,7 +30,7 @@ test_single_matches_data = [
 def test_output(capsys):
     rpsls.main()
     captured = capsys.readouterr()
-    assert "Will play 15 rounds" in captured.out
+    assert f"Will play {ROUNDS} rounds" in captured.out
 
 
 ## test the data (players, wins)
@@ -36,7 +38,7 @@ def test_all_players():
     assert rpsls.player() == test_all_players_data
 
 
-# replaced by a more general test
+# replaced with a more general test
 # def test_single_player():
 #     assert rpsls.player("spock") == ["rock", "scissors"]
 
@@ -48,7 +50,8 @@ def test_single_players(arg, expected):
 
 
 ## test the results of a match (player vs player)
-# replaced it with a more general test
+
+# replaced with a more general test
 # def test_single_match_win():
 #     assert rpsls.match("scissors", "rock") == "rock"
 # def test_single_match_tie():
@@ -70,3 +73,17 @@ def test_random_single_match_player_one():
 
 def test_random_single_match_player_two():
     assert rpsls.match(two="rock") in list(test_all_players_data.keys()) + ["tie"]
+
+
+## test e2e (full cycle of 15 matches)
+
+
+# first with random players
+def test_e2e_random_players(capsys):
+    rpsls.main()
+    captured = capsys.readouterr()
+    assert f"Will play {ROUNDS} rounds" in captured.out
+    assert len(captured.out.splitlines()) == 2 + ROUNDS
+
+
+# then with assigned players

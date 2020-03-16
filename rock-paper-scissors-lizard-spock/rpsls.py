@@ -42,6 +42,11 @@ def match(one: str = "", two: str = "") -> str:
 def main() -> None:
     print("Rock, paper, scissors, lizard, Spock")
     print(f"Will play {ROUNDS} rounds")
+    counter = 0
+    while counter < ROUNDS:
+        winner = match()
+        print(winner)
+        counter += 1
 
 
 if __name__ == "__main__":
