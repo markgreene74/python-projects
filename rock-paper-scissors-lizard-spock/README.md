@@ -6,7 +6,7 @@
 
 ## Rules
 
-- rock: crushes lizard, crushes
+- rock: crushes lizard, crushes scissors
 - paper: covers rock, disproves Spock
 - scissors: cuts paper, decapitates lizard
 - lizard: poisons Spock, eats paper
@@ -17,6 +17,13 @@
 Set the ENV variables needed in `pytest.ini`.
 
 Run:
+
 ```
-(env) $ pytest tests.py
+(env) $ python -m pytest
+```
+
+or just
+
+```
+(env) $ pytest
 ```
