@@ -1,6 +1,7 @@
 #!/bin/env python3
 
 import os
+from random import choice
 
 ROUNDS = int(os.environ.get("RPSLS_ROUNDS", 10))
 plays_list = ["rock", "paper", "scissors", "lizard", "spock"]
@@ -22,6 +23,12 @@ def play(aplay=None):
 
 
 def match(one="", two=""):
+    # pick a random player if needed
+    if one not in plays_list:
+        one = choice(plays_list)
+    if two not in plays_list:
+        two = choice(plays_list)
+    # return a tie or the winner
     if one == two:
         return "tie"
     if two in all_plays.get(one):

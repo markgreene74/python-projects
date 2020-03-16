@@ -24,12 +24,14 @@ test_single_matches_data = [
 ]
 
 
+## test the general behaviour
 def test_output(capsys):
     rpsls.main()
     captured = capsys.readouterr()
     assert "Will play 15 rounds" in captured.out
 
 
+## test the data (plays)
 def test_all_plays():
     assert rpsls.play() == test_all_plays_data
 
@@ -45,6 +47,7 @@ def test_single_plays(arg, expected):
     assert rpsls.play(arg) == expected
 
 
+## test the results of a match (play vs play)
 # replaced it with a more general test
 # def test_single_match_win():
 #     assert rpsls.match("scissors", "rock") == "rock"
@@ -55,3 +58,7 @@ def test_single_plays(arg, expected):
 @pytest.mark.parametrize("arg1, arg2, expected", test_single_matches_data)
 def test_single_matches(arg1, arg2, expected):
     assert rpsls.match(arg1, arg2) == expected
+
+
+def test_random_single_match():
+    assert rpsls.match() in list(test_all_plays_data.keys()) + ['tie']
