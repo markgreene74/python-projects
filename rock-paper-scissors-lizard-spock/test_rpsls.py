@@ -2,14 +2,14 @@ import pytest
 
 import rpsls
 
-test_all_plays_data = {
+test_all_players_data = {
     "rock": "scissors,lizard",
     "paper": "rock,spock",
     "scissors": "paper,lizard",
     "lizard": "spock,paper",
     "spock": "scissors,rock",
 }
-test_single_plays_data = [
+test_single_players_data = [
     ("rock", ["lizard", "scissors"]),
     ("scissors", ["lizard", "paper"]),
     ("spock", ["rock", "scissors"]),
@@ -31,23 +31,23 @@ def test_output(capsys):
     assert "Will play 15 rounds" in captured.out
 
 
-## test the data (plays)
-def test_all_plays():
-    assert rpsls.play() == test_all_plays_data
+## test the data (players, wins)
+def test_all_players():
+    assert rpsls.player() == test_all_players_data
 
 
 # replaced by a more general test
-# def test_single_play():
-#     assert rpsls.play("spock") == ["rock", "scissors"]
+# def test_single_player():
+#     assert rpsls.player("spock") == ["rock", "scissors"]
 
 
-@pytest.mark.parametrize("arg, expected", test_single_plays_data)
+@pytest.mark.parametrize("arg, expected", test_single_players_data)
 # @pytest.mark.parametrize('arg, expected', [("spock", ["rock", "scissors"])])
-def test_single_plays(arg, expected):
-    assert rpsls.play(arg) == expected
+def test_single_players(arg, expected):
+    assert rpsls.player(arg) == expected
 
 
-## test the results of a match (play vs play)
+## test the results of a match (player vs player)
 # replaced it with a more general test
 # def test_single_match_win():
 #     assert rpsls.match("scissors", "rock") == "rock"
@@ -61,4 +61,4 @@ def test_single_matches(arg1, arg2, expected):
 
 
 def test_random_single_match():
-    assert rpsls.match() in list(test_all_plays_data.keys()) + ["tie"]
+    assert rpsls.match() in list(test_all_players_data.keys()) + ["tie"]

@@ -4,7 +4,7 @@ import os
 from random import choice
 
 ROUNDS: int = int(os.environ.get("RPSLS_ROUNDS", 10))
-plays_list: list = ["rock", "paper", "scissors", "lizard", "spock"]
+players_list: list = ["rock", "paper", "scissors", "lizard", "spock"]
 wins_list: list = [
     "scissors,lizard",
     "rock,spock",
@@ -12,26 +12,26 @@ wins_list: list = [
     "spock,paper",
     "scissors,rock",
 ]
-all_plays: dict = dict(zip(plays_list, wins_list))
+players_table: dict = dict(zip(players_list, wins_list))
 
 
-def play(aplay: str = None) -> list:
-    if not aplay:
-        return all_plays
+def player(a_player: str = None) -> list:
+    if not a_player:
+        return players_table
     else:
-        return sorted(all_plays.get(aplay).split(","))
+        return sorted(players_table.get(a_player).split(","))
 
 
 def match(one: str = "", two: str = "") -> str:
     # pick a random player if needed
-    if one not in plays_list:
-        one = choice(plays_list)
-    if two not in plays_list:
-        two = choice(plays_list)
+    if one not in players_list:
+        one = choice(players_list)
+    if two not in players_list:
+        two = choice(players_list)
     # return a tie or the winner
     if one == two:
         return "tie"
-    if two in all_plays.get(one):
+    if two in players_table.get(one):
         # one wins
         return one
     else:
