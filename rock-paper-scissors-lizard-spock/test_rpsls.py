@@ -62,3 +62,11 @@ def test_single_matches(arg1, arg2, expected):
 
 def test_random_single_match():
     assert rpsls.match() in list(test_all_players_data.keys()) + ["tie"]
+
+
+def test_random_single_match_player_one():
+    assert rpsls.match(one="spock") in list(test_all_players_data.keys()) + ["tie"]
+
+
+def test_random_single_match_player_two():
+    assert rpsls.match(two="rock") in list(test_all_players_data.keys()) + ["tie"]
