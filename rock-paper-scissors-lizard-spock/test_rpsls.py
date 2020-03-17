@@ -25,6 +25,35 @@ test_single_matches_data: list = [
     ("spock", "rock", "spock"),
     ("paper", "lizard", "lizard"),
 ]
+test_e2e_assigned_players_mock_file: list = [
+    "rock scissors",
+    "paper spock",
+    "invalid line",  # invalid
+    "invalidline",  # invalid
+    "another invalid line",  # invalid
+    "lizard rock",
+    "lizard spock",
+    " lizard scissors ",
+    "scissors paper",
+    "scissors paper spock",  # this too is an invalid line
+    "paper paper",
+    "spock rock",
+    "paper lizard",
+    "tie scissors",  # invalid
+    "paper rock",
+]
+test_e2e_assigned_players_data: list = [
+    ("rock"),  # rock beats scissors
+    ("paper"),  # paper beats spock
+    ("rock"),  # rock beats lizard
+    ("lizard"),  # lizard beats spock
+    ("scissors"),  # scissors beat lizard
+    ("scissors"),  # scissors beat paper
+    ("tie"),
+    ("spock"),  # spock beats rock
+    ("lizard"),  # lizard beats paper
+    ("paper"),  # paper beats rock
+]
 
 
 ## test the general behaviour
@@ -90,3 +119,10 @@ def test_e2e_random_players(capsys):
 
 
 # then with assigned players
+def test_e2e_assigned_players(capsys):
+    rpsls.main()
+    captured = capsys.readouterr()
+    captured_lines = captured.out.splitlines()
+    assert f"Will play {ROUNDS} rounds" in captured.out
+    assert len(captured_lines) == 2 + ROUNDS
+    assert all(line in test_all_results_data for line in captured_lines[2:])
