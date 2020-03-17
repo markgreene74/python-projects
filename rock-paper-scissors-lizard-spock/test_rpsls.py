@@ -11,6 +11,7 @@ test_all_players_data: dict = {
     "lizard": "spock,paper",
     "spock": "scissors,rock",
 }
+test_all_results_data: list = list(test_all_players_data.keys()) + ["tie"]
 test_single_players_data: list = [
     ("rock", ["lizard", "scissors"]),
     ("scissors", ["lizard", "paper"]),
@@ -64,15 +65,15 @@ def test_single_matches(arg1, arg2, expected):
 
 
 def test_random_single_match():
-    assert rpsls.match() in list(test_all_players_data.keys()) + ["tie"]
+    assert rpsls.match() in test_all_results_data
 
 
 def test_random_single_match_player_one():
-    assert rpsls.match(one="spock") in list(test_all_players_data.keys()) + ["tie"]
+    assert rpsls.match(one="spock") in test_all_results_data
 
 
 def test_random_single_match_player_two():
-    assert rpsls.match(two="rock") in list(test_all_players_data.keys()) + ["tie"]
+    assert rpsls.match(two="rock") in test_all_results_data
 
 
 ## test e2e (full cycle of 15 matches)
@@ -82,8 +83,10 @@ def test_random_single_match_player_two():
 def test_e2e_random_players(capsys):
     rpsls.main()
     captured = capsys.readouterr()
+    captured_lines = captured.out.splitlines()
     assert f"Will play {ROUNDS} rounds" in captured.out
-    assert len(captured.out.splitlines()) == 2 + ROUNDS
+    assert len(captured_lines) == 2 + ROUNDS
+    assert all(line in test_all_results_data for line in captured_lines[2:])
 
 
 # then with assigned players
