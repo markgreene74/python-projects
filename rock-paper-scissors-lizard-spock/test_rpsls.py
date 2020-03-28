@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import mock_open, patch
 
 import os
 import rpsls
@@ -43,16 +44,22 @@ test_e2e_assigned_players_mock_file: list = [
     "paper rock",
 ]
 test_e2e_assigned_players_data: list = [
-    ("rock"),  # rock beats scissors
-    ("paper"),  # paper beats spock
-    ("rock"),  # rock beats lizard
-    ("lizard"),  # lizard beats spock
-    ("scissors"),  # scissors beat lizard
-    ("scissors"),  # scissors beat paper
-    ("tie"),
-    ("spock"),  # spock beats rock
-    ("lizard"),  # lizard beats paper
-    ("paper"),  # paper beats rock
+    "rock",  # rock beats scissors
+    "paper",  # paper beats spock
+    "rock",  # rock beats lizard
+    "lizard",  # lizard beats spock
+    "scissors",  # scissors beat lizard
+    "scissors",  # scissors beat paper
+    "tie",
+    "spock",  # spock beats rock
+    "lizard",  # lizard beats paper
+    "paper",  # paper beats rock
+    #
+    "rock",  # repeat the sequence until we reach
+    "paper",  # 15 rounds
+    "rock",
+    "lizard",
+    "scissors",
 ]
 
 
@@ -119,10 +126,13 @@ def test_e2e_random_players(capsys):
 
 
 # then with assigned players
+@patch(
+    "rpsls.open", mock_open(read_data="\n".join(test_e2e_assigned_players_mock_file))
+)
 def test_e2e_assigned_players(capsys):
     rpsls.main()
     captured = capsys.readouterr()
     captured_lines = captured.out.splitlines()
     assert f"Will play {ROUNDS} rounds" in captured.out
     assert len(captured_lines) == 2 + ROUNDS
-    assert all(line in test_all_results_data for line in captured_lines[2:])
+    assert captured_lines[2:] == test_e2e_assigned_players_data
