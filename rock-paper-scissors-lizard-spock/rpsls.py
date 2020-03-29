@@ -2,6 +2,7 @@
 
 import os
 from random import choice
+from itertools import cycle
 
 ROUNDS: int = int(os.environ.get("RPSLS_ROUNDS", 10))
 PLAYERS_FILE: str = "rpsls.txt"
@@ -37,10 +38,22 @@ def load_players_file() -> list:
     # of empty players
     if not os.path.isfile(PLAYERS_FILE):
         return [("", "")] * ROUNDS
-    # read the file, parse it and perform sanity check
+    # read the file, parse the data and perform some
+    # basic sanity check
     with open(PLAYERS_FILE) as f:
         data = f.readlines()
-    return data
+    _players = []
+    for line in data:
+        parsed = line.strip().split()
+        if len(parsed) != 2:
+            continue
+        elif all(p in players_list for p in parsed):
+            p_one, p_two = parsed
+            _players.append((p_one, p_two))
+    # create a cycle generator
+    cycle_players = cycle(_players)
+    # return n tuples of players with n equals to ROUNDS
+    return [next(cycle_players) for counter in range(ROUNDS)]
 
 
 def match(one: str = "", two: str = "") -> str:
