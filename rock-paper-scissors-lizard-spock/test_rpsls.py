@@ -117,7 +117,8 @@ def test_random_single_match_player_two():
 
 # first with random players
 def test_e2e_random_players(capsys):
-    rpsls.main()
+    with patch("os.path.isfile", return_value=False):
+        rpsls.main()
     captured = capsys.readouterr()
     captured_lines = captured.out.splitlines()
     assert f"Will play {ROUNDS} rounds" in captured.out
