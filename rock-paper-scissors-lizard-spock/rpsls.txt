@@ -1,0 +1,5 @@
+# this file contains a list of players in a very
+# simple format, example:
+rock spock
+this line will be ignored
+lizard rock

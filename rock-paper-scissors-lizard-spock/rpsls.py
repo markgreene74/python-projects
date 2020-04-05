@@ -2,8 +2,10 @@
 
 import os
 from random import choice
+from itertools import cycle
 
 ROUNDS: int = int(os.environ.get("RPSLS_ROUNDS", 10))
+PLAYERS_FILE: str = "rpsls.txt"
 players_list: list = ["rock", "paper", "scissors", "lizard", "spock"]
 wins_list: list = [
     "scissors,lizard",
@@ -16,13 +18,48 @@ players_table: dict = dict(zip(players_list, wins_list))
 
 
 def player(a_player: str = None) -> list:
+    """ Given a player return the list of players that
+        win in a match against it
+    """
     if not a_player:
         return players_table
     else:
         return sorted(players_table.get(a_player).split(","))
 
 
+def load_players_file() -> list:
+    """ If exists load the file containing a list of players
+        and create a match list. Also perform a sanity check
+        on the list.
+        If the number of players is less than the number of
+        rounds then cycle through the list
+    """
+    # if the file doesn't exist return a list
+    # of empty players
+    if not os.path.isfile(PLAYERS_FILE):
+        return [("", "")] * ROUNDS
+    # read the file, parse the data and perform some
+    # basic sanity check
+    with open(PLAYERS_FILE) as f:
+        data = f.readlines()
+    _players = []
+    for line in data:
+        parsed = line.strip().split()
+        if len(parsed) != 2:
+            continue
+        elif all(p in players_list for p in parsed):
+            p_one, p_two = parsed
+            _players.append((p_one, p_two))
+    # create a cycle generator
+    cycle_players = cycle(_players)
+    # return n tuples of players with n equals to ROUNDS
+    return [next(cycle_players) for counter in range(ROUNDS)]
+
+
 def match(one: str = "", two: str = "") -> str:
+    """ Given player one and player two return the result
+        of the match (either a tie or one of the two players)
+    """
     # pick a random player if needed
     if one not in players_list:
         one = choice(players_list)
@@ -40,8 +77,17 @@ def match(one: str = "", two: str = "") -> str:
 
 
 def main() -> None:
+    # print some useful information
     print("Rock, paper, scissors, lizard, Spock")
     print(f"Will play {ROUNDS} rounds")
+    # load the players file if it exists
+    # otherwise get a list of empty player
+    # which will trigger the random player selection
+    match_list = load_players_file()
+    # start the game
+    for i in match_list:
+        winner = match(i[0], i[1])
+        print(winner)
 
 
 if __name__ == "__main__":
