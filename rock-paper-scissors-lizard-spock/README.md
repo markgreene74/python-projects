@@ -20,8 +20,8 @@ If no set of players is defined the program will choose randomly two players for
 
 A set of players can be assigned in a file `rpsls.txt` which should be located in the same directory. The format of the file is simple text with two players (one round) on each line, for example:
 ```
-player1, player2
-player1, player2
+player1 player2
+player1 player2
 ...
 ```
 
