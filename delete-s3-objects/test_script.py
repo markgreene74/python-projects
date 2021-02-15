@@ -14,6 +14,7 @@ from freezegun import freeze_time
 # Prefix structure:
 # s3://my-mock-bucket/mock-root-prefix/mock-sub-prefix/
 mock_BUCKET = "my-mock-bucket"
+mock_REGION = "eu-west-1"
 mock_ROOT_PREFIX = "mock-root-prefix"
 mock_SUB_PREFIX = "mock-sub-prefix"
 mock_prefix = os.path.join(mock_ROOT_PREFIX, mock_SUB_PREFIX, "")
@@ -36,13 +37,16 @@ class test_cleanup_class(unittest.TestCase):
     def setUp(self):
         client = boto3.client(
             "s3",
-            region_name="eu-west-1",
+            region_name=mock_REGION,
             aws_access_key_id="fake_access_key",
             aws_secret_access_key="fake_secret_key",
         )
 
         # create the mock bucket resource
-        client.create_bucket(Bucket=mock_BUCKET)
+        client.create_bucket(
+            Bucket=mock_BUCKET,
+            CreateBucketConfiguration={"LocationConstraint": mock_REGION},
+        )
 
         # populate the bucket with mock data
         # use freeze_time to force the creation/last modified

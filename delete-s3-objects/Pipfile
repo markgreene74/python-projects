@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+boto3 = "*"
+
+[dev-packages]
+moto = "*"
+freezegun = "*"
+# see https://github.com/spulec/moto/issues/3535
+# pin mock version
+mock = "==4.0.2"
+
+[requires]
+python_version = "3.6"
