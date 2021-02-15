@@ -1,6 +1,6 @@
-'''
+"""
 Cleanup old backups from an S3 bucket
-'''
+"""
 
 import os
 import sys
@@ -8,10 +8,10 @@ import boto3
 import datetime
 from botocore.exceptions import ClientError
 
-BUCKET = os.environ.get('BACKUP_BUCKET', 'mybucket')
-ROOT_PREFIX = os.environ.get('ROOT_PREFIX')
-SUB_PREFIX = os.environ.get('SUB_PREFIX', '')
-DAYSTOKEEP = abs(int(os.environ.get('DAYSTOKEEP', 7)))
+BUCKET = os.environ.get("BACKUP_BUCKET", "mybucket")
+ROOT_PREFIX = os.environ.get("ROOT_PREFIX")
+SUB_PREFIX = os.environ.get("SUB_PREFIX", "")
+DAYSTOKEEP = abs(int(os.environ.get("DAYSTOKEEP", 7)))
 
 '''
 def get_client():
@@ -48,8 +48,13 @@ def get_bucket(client):
 '''
 
 
-def cleanup(aws_obj, bucket=BUCKET, main_folder=ROOT_PREFIX,
-            sub_folder=SUB_PREFIX, keep=DAYSTOKEEP):
+def cleanup(
+    aws_obj,
+    bucket=BUCKET,
+    main_folder=ROOT_PREFIX,
+    sub_folder=SUB_PREFIX,
+    keep=DAYSTOKEEP,
+):
     """
     Function that cleans up old backups from an S3 bucket.
 
@@ -90,18 +95,16 @@ def cleanup(aws_obj, bucket=BUCKET, main_folder=ROOT_PREFIX,
     # build a base prefix to limit the scope of list_objects
     # the prefix contains the main folder (ROOT_PREFIX) and the
     # sub folder (SUB_PREFIX)
-    limit_prefix = os.path.join(main_folder, sub_folder, '')
+    limit_prefix = os.path.join(main_folder, sub_folder, "")
 
-    print('Cleanup S3 backups\nWorking in the bucket: '.ljust(49), bucket)
-    print('The prefix is: '.ljust(30), limit_prefix)
-    print('The threshold (n. days) is: '.ljust(30), keep)
+    print("Cleanup S3 backups\nWorking in the bucket: ".ljust(49), bucket)
+    print("The prefix is: ".ljust(30), limit_prefix)
+    print("The threshold (n. days) is: ".ljust(30), keep)
 
     # Get all objects in the bucket using a paginator
     try:
-        s3paginator = aws_obj.get_paginator('list_objects_v2')
-        operation_parameters = {'Bucket': bucket,
-                                'Prefix': limit_prefix
-                                }
+        s3paginator = aws_obj.get_paginator("list_objects_v2")
+        operation_parameters = {"Bucket": bucket, "Prefix": limit_prefix}
         page_iterator = s3paginator.paginate(**operation_parameters)
         list_files = [page for page in page_iterator]
     except ClientError as err:
@@ -112,40 +115,41 @@ def cleanup(aws_obj, bucket=BUCKET, main_folder=ROOT_PREFIX,
     # of all the files; also print some useful information
     all_files = []
     for item in list_files:
-        all_files += [(files['LastModified'], files['Key'])
-                      for files in item['Contents']]
-    print('Total number of files in the bucket: '.ljust(40), len(all_files))
+        all_files += [
+            (files["LastModified"], files["Key"]) for files in item["Contents"]
+        ]
+    print("Total number of files in the bucket: ".ljust(40), len(all_files))
 
     # get now(), truncate it to h:m:s 00:00:00, then build a list of
     # files older than the number of days corrsponding to 'keep'
     dt_now = datetime.datetime.now().replace(hour=0, minute=0, second=0)
-    old_files = [x for x in all_files if
-                 (dt_now - x[0].replace(tzinfo=None)) > datetime.timedelta(days=keep)]
-    print('Number of files to be deleted: '.ljust(40), len(old_files))
+    old_files = [
+        x
+        for x in all_files
+        if (dt_now - x[0].replace(tzinfo=None)) > datetime.timedelta(days=keep)
+    ]
+    print("Number of files to be deleted: ".ljust(40), len(old_files))
     # build a list of dictionaries with all the items to be deleted
     # Example:
     # with ROOT_PREFIX=foo and SUB_PREFIX=bar
     # {'Key': 'foo/bar/TEST/20190703/folder/10.0.0.10/filename'}
-    to_delete = [{'Key': y[1]} for y in old_files]
+    to_delete = [{"Key": y[1]} for y in old_files]
 
     # the list is empty, exit and return True
     if not to_delete:
-        print('Nothing to delete')
+        print("Nothing to delete")
         return True
 
     # split in chunks of 1000 objects and delete them
     # we want to do a try/except for each chunk, just in case
     while to_delete:
         try:
-            print('Deleting the files from the bucket ...')
+            print("Deleting the files from the bucket ...")
             # grab a batch
             this_batch = to_delete[:1000]
 
             # delete_objects
-            aws_obj.delete_objects(
-                Bucket=bucket,
-                Delete={'Objects': this_batch}
-            )
+            aws_obj.delete_objects(Bucket=bucket, Delete={"Objects": this_batch})
 
             # remove the batch from to_delete
             to_delete = to_delete[1000:]
@@ -162,5 +166,3 @@ def cleanup(aws_obj, bucket=BUCKET, main_folder=ROOT_PREFIX,
     # - the number of files tagged for deletion
     # - the number of files left to delete (should be 0 after a succesful run)
     return (len(old_files), len(to_delete))
-
-

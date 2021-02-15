@@ -18,8 +18,8 @@ players_table: dict = dict(zip(players_list, wins_list))
 
 
 def player(a_player: str = None) -> list:
-    """ Given a player return the list of players that
-        win in a match against it
+    """Given a player return the list of players that
+    win in a match against it
     """
     if not a_player:
         return players_table
@@ -28,11 +28,11 @@ def player(a_player: str = None) -> list:
 
 
 def load_players_file() -> list:
-    """ If exists load the file containing a list of players
-        and create a match list. Also perform a sanity check
-        on the list.
-        If the number of players is less than the number of
-        rounds then cycle through the list
+    """If exists load the file containing a list of players
+    and create a match list. Also perform a sanity check
+    on the list.
+    If the number of players is less than the number of
+    rounds then cycle through the list
     """
     # if the file doesn't exist return a list
     # of empty players
@@ -57,8 +57,8 @@ def load_players_file() -> list:
 
 
 def match(one: str = "", two: str = "") -> str:
-    """ Given player one and player two return the result
-        of the match (either a tie or one of the two players)
+    """Given player one and player two return the result
+    of the match (either a tie or one of the two players)
     """
     # pick a random player if needed
     if one not in players_list:
