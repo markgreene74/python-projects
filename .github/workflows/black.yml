@@ -7,7 +7,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      task-trigger: .push
+      TASK_TRIGGER: .push
 
     steps:
     - uses: actions/checkout@v2
@@ -18,18 +18,16 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install black
-    - name: Run black (use --check, don't write the files)
+        pip install black==20.8b1
+    - name: Run black
       run: |
         black --version
-        black --check .
-    - name: Run black (write the files)
-      run: |
-        if [ -f ${task-trigger} ]; then
-          echo "The file ${task-trigger} exists, running black without the --check flag"
+        if [ -f ${TASK_TRIGGER} ]; then
+          echo "The file ${TASK_TRIGGER} exists, run black, write changes"
           black .
         else
-          echo "The file ${task-trigger} doesn't exist, do nothing"
+          echo "The file ${TASK_TRIGGER} doesn't exist, run black with the --check option, do not write changes"
+          black --check .
         fi
     - name: Commit and push if changed
       run: |-
@@ -37,5 +35,5 @@ jobs:
         git config --global user.email "actions@users.noreply.github.com"
         git config --global user.name "run-black-bot"
         git add -A
-        git commit -m "format code using black" || exit 0
+        git commit -m "code style: black" || exit 0
         git push
